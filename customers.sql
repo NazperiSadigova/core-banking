@@ -18,20 +18,25 @@ begin
   commit;
 end;
 
+
 create or replace procedure cb_customers_update
-(p_id number,p_first_name varchar2 default null,
-p_last_name varchar2 default null,p_birth_date date default null,
-p_gender char default null)
-is
+(p_id number, p_first_name varchar2 default null,
+   p_last_name varchar2 default null,p_birth_date date default null, 
+p_gender char default null, p_result out varchar2)
+is 
 begin
-  update cb_customers set
+  update cb_customers set 
       first_name=nvl(p_first_name,first_name),
       last_name=nvl(p_last_name,last_name),
       birth_date=nvl(p_birth_date,birth_date),
       gender=nvl(p_gender,gender)
-      where id=p_id;
-      commit;
+    where id=p_id;
+   if SQL%rowcount=0 then 
+      p_result:='No row updated';
+   else 
+      p_result:='1 row updated';
+   end if;  
+  commit;  
 end;
-
 
 
